@@ -62,3 +62,55 @@ const ages = books.map((b) => b.author.age);
 const agesSum = ages.reduce((acc, curr) => acc + curr);
 
 console.log("Snack 4:", agesSum / ages.length);
+// ----------
+
+// Snack 5 (Bonus) - Raccogli i libri
+//  Usando la l'API https://boolean-spec-frontend.vercel.app/freetestapi/books/{id} usa la combinazione di .map() e Promise.all(), per creare una funzione (getBooks) che a partire da un array di id (ids), ritorna una promise che risolve un array di libri (books).
+//  Testala con l’array [2, 13, 7, 21, 19] .
+function getBooks(ids) {
+  return Promise.all(
+    ids.map((id) =>
+      fetch(`http://127.0.0.1:5000/books/${id}`).then((res) => {
+        if (!res.ok) {
+          throw new Error(`Errore: id ${id}, ${res.status}`);
+        }
+        return res.json();
+      })
+    )
+  );
+}
+
+getBooks([2, 13, 7, 21, 19])
+  .then((b) => console.log("Snack 5 (Bonus):", b))
+  .catch((error) => console.error("Errore:", error.message));
+// ----------
+
+// Snack 6 (Bonus) - Ordina i libri
+//  Crea una variabile booleana (areThereAvailableBooks) per verificare se c’è almeno un libro disponibile.
+//  Crea un array (booksByPrice) con gli elementi di books ordinati in base al prezzo (crescente).
+//  Ordina l’array booksByPricein base alla disponibilità (prima quelli disponibili), senza creare un nuovo array.
+const areThereAvailableBooks = books.some((b) => b.available === true);
+
+const booksByPrice = [...books].sort(
+  (a, b) => onlyValue(a.price) - onlyValue(b.price)
+);
+
+booksByPrice.sort((a, b) => b.available - a.available);
+
+console.log("Snack 6 (Bonus):", booksByPrice);
+// ----------
+
+// Snack 7 (Bonus) - Analizza i tag
+// Usa reduce per creare un oggetto (tagCounts) che conta quante volte ogni tag viene usato tra i libri.
+const tagCounts = books.reduce((acc, curr) => {
+  curr.tags.forEach((tag) => {
+    if (acc[tag]) {
+      acc[tag]++;
+    } else {
+      acc[tag] = 1;
+    }
+  });
+  return acc;
+}, {});
+
+console.log("Snack 7 (Bonus):", tagCounts);
