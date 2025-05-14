@@ -2,17 +2,16 @@ import books from "./data.js";
 console.log("Books:", books);
 
 // Snack 1 - Filtra e Modifica
-//  Crea una funzione che somma due numeri.
 //      Crea un array (longBooks) con i libri che hanno più di 300 pagine;
 //      Creare un array (longBooksTitles) che contiene solo i titoli dei libri contenuti in longBooks.
 //      Stampa in console ogni titolo nella console.
-const somma = (a, b) => a + b;
 
 const longBooks = books.filter((b) => b.pages > 300);
 
 const longBooksTitles = longBooks.map((b) => b.title);
 
-console.log("Snack 1:", longBooksTitles);
+longBooksTitles.forEach((t) => console.log("Snack 1:", t));
+
 // ----------
 
 // Snack 2 - Il primo libro scontato
@@ -48,7 +47,13 @@ const authors = books.map((b) => b.author);
 
 const areAuthorsAdults = authors.every((a) => a.age >= 18);
 
-authors.sort((a, b) => b.age - a.age);
+authors.sort((a, b) => a.age - b.age) * (areAuthorsAdults ? 1 : -1);
+// stessa funzionalità, codice più verboso
+// if (areAuthorsAdults) {
+//   authors.sort((a, b) => a.age - b.age);
+// } else {
+//   authors.sort((a, b) => b.age - a.age);
+// }
 
 console.log("Snack 3:", authors);
 // ----------
@@ -59,7 +64,7 @@ console.log("Snack 3:", authors);
 // Stampa in console l’età media degli autori dei libri.
 const ages = books.map((b) => b.author.age);
 
-const agesSum = ages.reduce((acc, curr) => acc + curr);
+const agesSum = ages.reduce((acc, curr) => acc + curr, 0);
 
 console.log("Snack 4:", agesSum / ages.length);
 // ----------
